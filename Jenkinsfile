@@ -16,7 +16,7 @@ pipeline {
 			    withPythonEnv("/usr/bin/${item}") {
 						sh "python --version"
 						sh "pip --version"
-						sh "pip install -r requirements.txt"
+						sh "pip install -r requirement.txt"
 			    }
 	        }
 		}
