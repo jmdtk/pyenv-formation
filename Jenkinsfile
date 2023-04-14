@@ -1,3 +1,4 @@
+
 def versionpython= ["python3.8", "python3.9"]
 
 pipeline {
@@ -21,8 +22,10 @@ pipeline {
 						sh "pip install -r requirement.txt"
 			    }
 	        }
+        }
+        }
 	}
-    stage("install req")
+    stage("compilation")
     {
 	  agent { label 'Slave 3' }
       steps
