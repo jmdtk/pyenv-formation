@@ -1,7 +1,8 @@
 
 def versionpython= ["python3.8", "python3.9"]
 
-pipeline {
+pipeline 
+{
   agent none
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
@@ -13,17 +14,21 @@ pipeline {
     stage("install req")
     {
 	  agent { label 'Slave 3' }
-      steps{
-        script{
-	        versionpython.each {item ->
-			    withPythonEnv("/usr/bin/${item}") {
+      steps
+      {
+        script
+        {
+	        versionpython.each 
+            {item ->
+			    withPythonEnv("/usr/bin/${item}") 
+                {
 						sh "python --version"
 						sh "pip --version"
 						sh "pip install -r requirement.txt"
 			    }
 	        }
         }
-        }
+      }
 	}
     stage("compilation")
     {
@@ -32,8 +37,11 @@ pipeline {
 	  {
         script
 	    {
-		   versionpython.each {item ->
-		       withPythonEnv("/usr/bin/${item}") {
+		   versionpython.each 
+           {item ->
+		       withPythonEnv("/usr/bin/${item}") 
+               {
+               echo'compil ${item}'
 		       sh 'python -m py_compile sources/add2vals.py sources/calc.py'
 		       }
 		   }
@@ -41,5 +49,25 @@ pipeline {
         }
       }
     }
- }
+  
+    stage("compilation")
+    {
+	  agent { label 'Slave 3' }
+      steps
+	  {
+        script
+	    {
+		   versionpython.each 
+           {item ->
+		       withPythonEnv("/usr/bin/${item}") 
+               {
+		       sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+               junit 'test-reports/results.xml'
+		       }
+		   }
+	       
+        }
+      }
+    }
+  }
 }
