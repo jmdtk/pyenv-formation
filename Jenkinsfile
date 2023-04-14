@@ -41,7 +41,7 @@ pipeline
            {item ->
 		       withPythonEnv("/usr/bin/${item}") 
                {
-               echo'compil ${item}'
+               echo "compil ${item}"
 		       sh 'python -m py_compile sources/add2vals.py sources/calc.py'
 		       }
 		   }
@@ -61,7 +61,7 @@ pipeline
            {item ->
 		       withPythonEnv("/usr/bin/${item}") 
                {
-		       echo'test ${item}'
+		       echo"test ${item}"
 		       sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
                junit 'test-reports/results.xml'
 		       }
