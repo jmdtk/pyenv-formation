@@ -19,7 +19,21 @@ pipeline {
 						sh "pip install -r requirement.txt"
 			    }
 	        }
-		}
+	}
+     stage("install req")
+     {
+	  agent { label 'Slave 3' }
+          steps
+	  {
+               script
+	       {
+		   versionpython.each {item ->
+		       withPythonEnv("/usr/bin/${item}") {
+		       sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+		       }
+		   }
+	       }
+          }
       }
     }
   }
