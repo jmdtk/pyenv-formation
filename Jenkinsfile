@@ -7,8 +7,10 @@ pipeline {
     timeout(time: 60, unit:'MINUTES')
     timestamps()
   }
-  stages {
-    stage("install req"){
+  stages 
+  {
+    stage("install req")
+    {
 	  agent { label 'Slave 3' }
       steps{
         script{
@@ -20,21 +22,20 @@ pipeline {
 			    }
 	        }
 	}
-     stage("install req")
-     {
+    stage("install req")
+    {
 	  agent { label 'Slave 3' }
-          steps
+      steps
 	  {
-               script
-	       {
+        script
+	    {
 		   versionpython.each {item ->
 		       withPythonEnv("/usr/bin/${item}") {
 		       sh 'python -m py_compile sources/add2vals.py sources/calc.py'
 		       }
 		   }
-	       }
-          }
+	       
+        }
       }
     }
-  }
 }
